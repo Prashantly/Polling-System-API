@@ -5,6 +5,6 @@ const express = require("express");
 const router = express.Router();
 
 //Routes related to questions
-router.get("/questions", require("./question"));
+router.use("/questions", require("./question"));
 
 module.exports = router;

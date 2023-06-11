@@ -1,13 +1,15 @@
 //requier dotenv
 require("dotenv").config();
 const express = require("express");
+const bodyParser = require("body-parser");
 const db = require("./config/mongoose");
 
 const app = express();
+const Port = 6000;
 
-// console.log(process.env);
+app.use(bodyParser.urlencoded({ extended: false }));
 
-const Port = process.env.PORT || 6000;
+app.use("/", require("./routes"));
 
 //listen to app
 app.listen(Port, (err) => {
