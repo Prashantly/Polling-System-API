@@ -1,6 +1,11 @@
+//requier dotenv
+require("dotenv").config();
 const express = require("express");
+const db = require("./config/mongoose");
 
 const app = express();
+
+// console.log(process.env);
 
 const Port = process.env.PORT || 6000;
 
