@@ -1,4 +1,5 @@
 const Question = require("../models/question");
+const Option = require("../models/option");
 
 //create controller action for creating quetion
 module.exports.create = async (req, res) => {

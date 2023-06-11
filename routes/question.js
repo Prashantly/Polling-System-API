@@ -4,7 +4,10 @@ const express = require("express");
 const router = express.Router();
 
 const QuestionsController = require("../controllers/questions_controller");
+const OptionsController = require("../controllers/options_controller");
 
 router.post("/create", QuestionsController.create);
+
+router.post("/:questionId/options/create", OptionsController.createOption);
 
 module.exports = router;

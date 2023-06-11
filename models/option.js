@@ -20,7 +20,6 @@ const optionSchema = new mongoose.Schema({
 
   linkToVote: {
     type: String,
-    required: true,
   },
 });
 
