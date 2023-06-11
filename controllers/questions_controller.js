@@ -24,3 +24,32 @@ module.exports.create = async (req, res) => {
     });
   }
 };
+
+//get particulare question by id and all its's options
+module.exports.getQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+
+    //find question by id
+
+    const question = await Question.findById(questionId).populate("options");
+
+    if (!question) {
+      return res.status(404).json({
+        message: "Question not found with id " + questionId,
+      });
+    }
+
+    //if question found send the question in to response
+    return res.status(200).json({
+      message: "Question found successfully",
+      question,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving the question.",
+    });
+  }
+};
