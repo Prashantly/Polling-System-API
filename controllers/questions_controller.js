@@ -13,7 +13,7 @@ module.exports.create = async (req, res) => {
     await question.save();
     //return question with mesage
     return res.status(201).json({
-      message: "Question created successfully",
+      message: `Question -> ${question.title} created successfully`,
       question,
     });
   } catch (err) {
@@ -36,7 +36,7 @@ module.exports.getQuestion = async (req, res) => {
 
     if (!question) {
       return res.status(404).json({
-        message: "Question not found with id " + questionId,
+        message: "Question not found",
       });
     }
 
@@ -75,7 +75,7 @@ module.exports.deleteQuestion = async (req, res) => {
       if (options[i].votes > 0) {
         return res.status(400).json({
           success: false,
-          message: "Question can not be deleted as it has votes",
+          message: `Question --->${question.title} can not be deleted as it has votes`,
         });
       }
     }
@@ -92,7 +92,7 @@ module.exports.deleteQuestion = async (req, res) => {
 
     //if question is deleted successfully send the response
     return res.status(200).json({
-      message: "Question deleted successfully",
+      message: `Question --->${question.title} deleted successfully`,
       deletedQuestion,
       deletedOptions,
     });

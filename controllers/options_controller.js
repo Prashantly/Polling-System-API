@@ -85,7 +85,7 @@ module.exports.deleteOption = async (req, res) => {
     //send response
     return res.status(200).json({
       success: true,
-      message: `Option ${option.answer} deleted successfully from question ${question.title}`,
+      message: `Option ${option.answer} deleted successfully from question -> ${question.title}`,
       data: option,
     });
   } catch (err) {
