@@ -35,13 +35,64 @@ module.exports.createOption = async (req, res) => {
     await question.save();
 
     return res.status(201).json({
-      message: "Option created successfully",
+      message: `Option ${option.answer} added successfully!!`,
       option,
     });
   } catch (err) {
     console.log(err);
     res.status(500).send({
       message: err.message || "Some error occurred while Adding Option.",
+    });
+  }
+};
+
+//delete option
+module.exports.deleteOption = async (req, res) => {
+  try {
+    const { optionId } = req.params;
+
+    //find option id in database
+    const option = await Option.findById(optionId);
+
+    //if option not found
+    if (!option) {
+      return res.status(404).json({
+        success: false,
+        error: "Option not found",
+      });
+    }
+
+    //if option present then if option have votes
+    if (option.votes > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Option ${option.answer} can not be deleted as it has votes`,
+      });
+    }
+
+    //delete the option
+    await option.deleteOne({
+      _id: optionId,
+    });
+
+    //find related question and remove option from options array
+    const question = await Question.findByIdAndUpdate(
+      option.questionRef,
+      { $pull: { options: optionId } },
+      { new: true }
+    );
+
+    //send response
+    return res.status(200).json({
+      success: true,
+      message: `Option ${option.answer} deleted successfully from question ${question.title}`,
+      data: option,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      success: false,
+      message: err.message || "Some error occurred while deleting Option.",
     });
   }
 };
@@ -65,7 +116,7 @@ module.exports.addVote = async (req, res) => {
     //save option
     await option.save();
     return res.status(200).json({
-      message: `Vote added to the option ${optionId}`,
+      message: `Vote added to the option ${option.answer}`,
       data: option,
     });
   } catch (err) {
