@@ -68,7 +68,19 @@ module.exports.deleteQuestion = async (req, res) => {
       });
     }
 
-    //if question exist then delete question
+    //if question exist then check any of the option have votes more than 0
+    const options = question.options;
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].votes > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Question can not be deleted as it has votes",
+        });
+      }
+    }
+
+    //if question exist and it's all option votes have 0 votes delete question
     const deletedQuestion = await Question.deleteOne({
       _id: questionId,
     });
