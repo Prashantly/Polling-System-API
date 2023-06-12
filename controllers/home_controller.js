@@ -7,7 +7,8 @@ module.exports.home = async (req, res) => {
 
     // Send the questions back in the response
     return res.status(200).json({
-      questions,
+      success: true,
+      data: questions,
     });
   } catch (err) {
     // Log any errors that occur and return an error response

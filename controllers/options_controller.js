@@ -12,7 +12,7 @@ module.exports.createOption = async (req, res) => {
 
     if (!question) {
       return res.status(404).json({
-        message: "Question not found",
+        error: "Question not found",
       });
     }
 
@@ -42,6 +42,36 @@ module.exports.createOption = async (req, res) => {
     console.log(err);
     res.status(500).send({
       message: err.message || "Some error occurred while Adding Option.",
+    });
+  }
+};
+
+//adding votes to the options
+module.exports.addVote = async (req, res) => {
+  try {
+    const { optionId } = req.params;
+
+    //check option exist in database
+    const option = await Option.findById(optionId);
+    if (!option) {
+      return res.status(404).json({
+        error: "Option not found",
+      });
+    }
+
+    //if option exists the increment count of the vote for the given option
+    option.votes += 1;
+
+    //save option
+    await option.save();
+    return res.status(200).json({
+      message: `Vote added to the option ${optionId}`,
+      data: option,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: err.message || "Some error occurred while Adding Vote.",
     });
   }
 };

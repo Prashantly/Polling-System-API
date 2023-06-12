@@ -8,4 +8,6 @@ router.get("/", homeController.home);
 //Routes related to questions
 router.use("/questions", require("./question"));
 
+router.use("/options", require("./option"));
+
 module.exports = router;
